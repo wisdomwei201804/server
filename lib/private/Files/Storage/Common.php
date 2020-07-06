@@ -865,7 +865,7 @@ abstract class Common implements Storage, ILockingStorage, IWriteStreamStorage {
 		try {
 			[$count, $result] = \OC_Helper::streamCopy($stream, $target);
 			if (!$result) {
-				throw new GenericFileException("Failed to copy stream");
+				throw new GenericFileException("Failed to copy stream to $path");
 			}
 		} finally {
 			fclose($target);

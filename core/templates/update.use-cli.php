@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+?>
 <div class="update" data-productname="<?php p($_['productName']) ?>" data-version="<?php p($_['version']) ?>">
 	<div class="updateOverview">
 		<h2 class="title"><?php p($l->t('Update needed')) ?></h2>

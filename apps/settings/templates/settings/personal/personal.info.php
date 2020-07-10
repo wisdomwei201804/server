@@ -22,8 +22,10 @@
  *
  */
 
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 
 script('settings', [
 	'usersettings',
@@ -33,7 +35,6 @@ script('settings', [
 	'settings/personalInfo',
 ]);
 ?>
-
 <div id="personal-settings">
 	<div id="personal-settings-avatar-container" class="personal-settings-container">
 		<div>

@@ -1,5 +1,7 @@
-<?php /** @var $l \OCP\IL10N */ ?>
 <?php
+/**
+ * @var array $_
+ */
 script('core', 'dist/login');
 ?>
 

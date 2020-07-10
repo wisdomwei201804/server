@@ -21,11 +21,11 @@
  *
  */
 
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
-
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
-
 <div class="section" id="backgroundjobs">
 	<h2 class="inlineblock"><?php p($l->t('Background jobs'));?></h2>
 	<p class="cronlog inlineblock">

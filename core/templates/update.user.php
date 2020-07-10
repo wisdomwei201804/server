@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
+?>
 <div class="body-login-container">
 	<div class="icon-big icon-error-white"></div>
 	<h2><?php p($l->t('Maintenance mode', [$theme->getName()])) ?></h2>

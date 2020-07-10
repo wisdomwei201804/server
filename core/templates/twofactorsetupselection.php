@@ -21,7 +21,10 @@ declare(strict_types=1);
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
 <div class="body-login-container update">
 	<h2 class="two-factor-header"><?php p($l->t('Setup two-factor authentication')) ?></h2>

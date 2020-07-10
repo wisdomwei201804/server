@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 // @codeCoverageIgnoreStart
 if (!isset($_)) {//standalone  page is not supported anymore - redirect to /
 	require_once '../../lib/base.php';

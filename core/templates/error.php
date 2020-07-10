@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+?>
 <div class="error">
 	<h2><?php p($l->t('Error')) ?></h2>
 	<ul>

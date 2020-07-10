@@ -20,7 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+/**
+ * @var array $_
+ */
 script('settings', 'vue-settings-apps-users-management');
 style('settings', 'settings');
 

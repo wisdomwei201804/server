@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
+?>
 <fieldset id="ldapWizard4">
 	<div>
 		<p>

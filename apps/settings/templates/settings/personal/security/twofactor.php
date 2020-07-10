@@ -22,8 +22,11 @@ declare(strict_types=1);
  *
  */
 
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
-
 <div id="two-factor-auth" class="section">
 	<h2><?php p($l->t('Two-Factor Authentication'));?></h2>
 	<a target="_blank" rel="noreferrer noopener" class="icon-info"

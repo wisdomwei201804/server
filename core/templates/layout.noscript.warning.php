@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \OCP\IL10N $l
+ */
+?>
 <noscript>
 	<div id="nojavascript">
 		<div>

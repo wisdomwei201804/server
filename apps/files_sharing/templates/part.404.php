@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \OCP\IL10N $l
+ */
+?>
 <ul>
 	<li class="error error-broken-link">
 		<p><?php p($l->t('Sorry, this link doesn’t seem to work anymore.')) ?></p>

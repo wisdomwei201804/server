@@ -1,7 +1,10 @@
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 style('twofactor_backupcodes', 'style');
 ?>
-
 <img class="two-factor-icon" src="<?php p(image_path('core', 'actions/more-white.svg')) ?>" alt="" />
 
 <p><?php p($l->t('Use one of the backup codes you saved when setting up two-factor authentication.')) ?></p>

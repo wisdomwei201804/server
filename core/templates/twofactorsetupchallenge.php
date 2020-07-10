@@ -1,12 +1,13 @@
 <?php
-/** @var $l \OCP\IL10N */
-/** @var $_ array */
-/* @var $provider OCP\Authentication\TwoFactorAuth\IProvider */
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var \OCP\Authentication\TwoFactorAuth\IProvider $provider
+ * @var string $template
+ */
 $provider = $_['provider'];
-/* @var $template string */
 $template = $_['template'];
 ?>
-
 <div class="body-login-container update">
 	<h2 class="two-factor-header"><?php p($provider->getDisplayName()); ?></h2>
 	<?php print_unescaped($template); ?>

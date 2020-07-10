@@ -21,6 +21,11 @@
  *
  */
 
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+
 script('settings', [
 	'settings',
 	'templates',
@@ -30,7 +35,6 @@ script('settings', [
 if ($_['passwordChangeSupported']) {
 	script('settings', 'security_password');
 }
-
 ?>
 <?php if ($_['passwordChangeSupported']) { ?>
 <div id="security-password" class="section">

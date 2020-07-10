@@ -21,13 +21,13 @@
  *
  */
 
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 
 script('settings', 'vue-settings-admin-security');
-
 ?>
-
 <div id="two-factor-auth" class="section">
 	<h2><?php p($l->t('Two-Factor Authentication'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info" title="<?php p($l->t('Open documentation'));?>" href="<?php p(link_to_docs('admin-2fa')); ?>"></a>

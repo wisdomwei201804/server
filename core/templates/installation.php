@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 script('core', [
 	'dist/install'
 ]);

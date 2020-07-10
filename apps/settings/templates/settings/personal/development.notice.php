@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \OCP\IL10N $l
+ */
+?>
 <div class="section">
 	<p>
 		<?php print_unescaped(str_replace(

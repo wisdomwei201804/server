@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+?>
 <div class="update">
 	<p class="message"><?php p($l->t('There was an error updating your attendance status.'));?></p>
 	<p class="message"><?php p($l->t('Please contact the organizer directly.'));?></p>

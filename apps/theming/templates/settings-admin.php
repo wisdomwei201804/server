@@ -22,6 +22,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+
 script('theming', 'settings-admin');
 script('theming', '3rdparty/jscolor/jscolor');
 style('theming', 'settings-admin');

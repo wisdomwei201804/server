@@ -21,11 +21,11 @@
  *
  */
 
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
-
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
-
 <div class="section" id="shareAPI">
 	<h2><?php p($l->t('Sharing'));?></h2>
 	<a target="_blank" rel="noreferrer noopener" class="icon-info"

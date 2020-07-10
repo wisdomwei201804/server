@@ -1,11 +1,13 @@
-<?php /** @var $l OC_L10N */ ?>
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 script('user_ldap', [
 	'renewPassword',
 ]);
 style('user_ldap', 'renewPassword');
 ?>
-
 <form method="post" name="renewpassword" id="renewpassword" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('user_ldap.renewPassword.tryRenewPassword')); ?>">
 	<fieldset>
 		<div class="warning title">
@@ -43,7 +45,7 @@ style('user_ldap', 'renewPassword');
 				placeholder="<?php echo $l->t('New password');?>"
 				data-typetoggle="#personal-show" autofocus autocomplete="off" autocapitalize="off" autocorrect="off" required/>
 		</p>
-		
+
 		<input type="submit" id="submit" class="login primary icon-confirm-white" title="" value="<?php p($l->t('Renew password')); ?>"/>
 
 		<?php if (!empty($_['invalidpassword'])) { ?>

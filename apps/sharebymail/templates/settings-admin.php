@@ -1,7 +1,8 @@
 <?php
-/** @var array $_ */
-
-/** @var \OCP\IL10N $l */
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 script('sharebymail', 'settings-admin');
 style('sharebymail', 'settings-admin');
 ?>

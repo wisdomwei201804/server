@@ -1,7 +1,8 @@
 <?php
-	/** @var array $_ */
-	/** @var \OCP\IL10N $l */
-
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 style('core', ['styles', 'header']);
 ?>
 <div class="error error-wide">

@@ -1,16 +1,17 @@
 <?php
-/** @var $l \OCP\IL10N */
-/** @var $_ array */
-/* @var $error boolean */
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var bool $error
+ * @var string $error_message
+ * @var \OCP\Authentication\TwoFactorAuth\IProvider $provider
+ * @var string $template
+ */
 $error = $_['error'];
-/* @var $error_message string */
 $error_message = $_['error_message'];
-/* @var $provider OCP\Authentication\TwoFactorAuth\IProvider */
 $provider = $_['provider'];
-/* @var $template string */
 $template = $_['template'];
 ?>
-
 <div class="body-login-container update two-factor">
 	<h2 class="two-factor-header"><?php p($provider->getDisplayName()); ?></h2>
 	<?php if ($error): ?>

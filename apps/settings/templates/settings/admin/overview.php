@@ -21,12 +21,11 @@
  *
  */
 
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
-/** @var \OCP\Defaults $theme */
-
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
-
 <div id="security-warning" class="section">
 	<h2 class="inlineblock"><?php p($l->t('Security & setup warnings'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info" title="<?php p($l->t('Open documentation'));?>" href="<?php p(link_to_docs('admin-warnings')); ?>"></a>

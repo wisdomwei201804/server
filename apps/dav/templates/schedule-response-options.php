@@ -1,8 +1,11 @@
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 style('dav', 'schedule-response');
 //script('dav', 'schedule-response');
 ?>
-
 <div class="update">
 	<form action="" method="post">
 		<fieldset id="partStat">

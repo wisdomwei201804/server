@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 $noProviders = empty($_['providers']);
 ?>
 <div class="body-login-container update two-factor">

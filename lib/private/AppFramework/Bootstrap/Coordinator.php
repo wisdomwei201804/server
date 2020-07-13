@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace OC\AppFramework\Bootstrap;
 
+use OC\InitialStateService;
 use OC\Search\SearchComposer;
 use OC\Support\CrashReport\Registry;
 use OC_App;
@@ -53,6 +54,9 @@ class Coordinator {
 	/** @var SearchComposer */
 	private $searchComposer;
 
+	/** @var InitialStateService */
+	private $initialStateService;
+
 	/** @var ILogger */
 	private $logger;
 
@@ -60,12 +64,14 @@ class Coordinator {
 								Registry $registry,
 								IEventDispatcher $eventListener,
 								SearchComposer $searchComposer,
+								InitialStateService $initialStateService,
 								ILogger $logger) {
 		$this->serverContainer = $container;
 		$this->registry = $registry;
 		$this->eventDispatcher = $eventListener;
 		$this->searchComposer = $searchComposer;
 		$this->logger = $logger;
+		$this->initialStateService = $initialStateService;
 	}
 
 	public function runRegistration(): void {
@@ -119,6 +125,7 @@ class Coordinator {
 		$context->delegateContainerRegistrations($apps);
 		$context->delegateMiddlewareRegistrations($apps);
 		$context->delegateSearchProviderRegistration($apps, $this->searchComposer);
+		$context->delegateInitialStateProviderRegistration($this->initialStateService);
 	}
 
 	public function bootApp(string $appId): void {

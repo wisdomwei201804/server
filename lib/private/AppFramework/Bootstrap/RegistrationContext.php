@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace OC\AppFramework\Bootstrap;
 
 use Closure;
+use OC\InitialStateService;
 use OC\Search\SearchComposer;
 use OC\Support\CrashReport\Registry;
 use OCP\AppFramework\App;
@@ -59,6 +60,9 @@ class RegistrationContext {
 
 	/** @var array[] */
 	private $searchProviders = [];
+
+	/** @var array[] */
+	private $initialStates = [];
 
 	/** @var ILogger */
 	private $logger;
@@ -141,6 +145,13 @@ class RegistrationContext {
 					$class
 				);
 			}
+
+			public function registerInitialStateProvider(string $class): void {
+				$this->context->registerInitialStateProvider(
+					$this->appId,
+					$class
+				);
+			}
 		};
 	}
 
@@ -201,6 +212,13 @@ class RegistrationContext {
 
 	public function registerSearchProvider(string $appId, string $class) {
 		$this->searchProviders[] = [
+			'appId' => $appId,
+			'class' => $class,
+		];
+	}
+
+	public function registerInitialStateProvider(string $appId, string $class) {
+		$this->initialStates[] = [
 			'appId' => $appId,
 			'class' => $class,
 		];
@@ -357,6 +375,20 @@ class RegistrationContext {
 				$appId = $registration['appId'];
 				$this->logger->logException($e, [
 					'message' => "Error during search provider registration of $appId: " . $e->getMessage(),
+					'level' => ILogger::ERROR,
+				]);
+			}
+		}
+	}
+
+	public function delegateInitialStateProviderRegistration(InitialStateService $initialStateService): void {
+		foreach ($this->initialStates as $initialState) {
+			try {
+				$initialStateService->registerLazyBase($initialState['appId'], $initialState['class']);
+			} catch (Throwable $e) {
+				$appId = $initialState['appId'];
+				$this->logger->logException($e, [
+					'message' => "Error during initialstate registration of $appId: " . $e->getMessage(),
 					'level' => ILogger::ERROR,
 				]);
 			}

@@ -20,11 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+script('settings', 'vue-settings-apps-users-management');
+style('settings', 'settings');
+
 /**
  * @var array $_
  */
-script('settings', 'vue-settings-apps-users-management');
-style('settings', 'settings');
 
 // Do we have some data to inject ?
 if (is_array($_['serverData'])) {

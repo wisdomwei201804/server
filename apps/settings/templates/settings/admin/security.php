@@ -19,10 +19,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+script('settings', 'vue-settings-admin-security');
+
+/**
  * @var array $_
  * @var \OCP\IL10N $l
  */
-script('settings', 'vue-settings-admin-security');
 ?>
 <div id="two-factor-auth" class="section">
 	<h2><?php p($l->t('Two-Factor Authentication'));?></h2>

@@ -1,8 +1,4 @@
 <?php
-/**
- * @var array $_
- * @var \OCP\IL10N $l
- */
 script('settings', [
 	'usersettings',
 	'templates',
@@ -10,6 +6,10 @@ script('settings', [
 	'federationscopemenu',
 	'settings/personalInfo',
 ]);
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
 <div id="personal-settings">
 	<div id="personal-settings-avatar-container" class="personal-settings-container">

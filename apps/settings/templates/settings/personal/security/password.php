@@ -21,16 +21,16 @@
  *
  */
 
-/**
- * @var array $_
- * @var \OCP\IL10N $l
- */
-
 script('settings', [
 	'settings',
 	'templates',
 	'vue-settings-personal-security',
 ]);
+
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 
 if ($_['passwordChangeSupported']) {
 	script('settings', 'security_password');

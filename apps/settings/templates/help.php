@@ -1,9 +1,9 @@
 <?php
+\OC_Util::addStyle('settings', "settings");
 /**
  * @var array $_
  * @var \OCP\IL10N $l
  */
-\OC_Util::addStyle('settings', "settings");
 ?>
 <div id="app-navigation">
 	<ul>

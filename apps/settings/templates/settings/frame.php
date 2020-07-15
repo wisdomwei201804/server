@@ -21,15 +21,15 @@
  *
  */
 
-/**
- * @var array $_
- * @var \OCP\IL10N $l
- */
-
 style('settings', 'settings');
 script('settings', [ 'settings', 'admin', 'log']);
 script('core', 'setupchecks');
 script('files', 'jquery.fileupload');
+
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
 <div id="app-navigation">
 	<ul>

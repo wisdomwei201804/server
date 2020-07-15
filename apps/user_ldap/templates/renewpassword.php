@@ -1,12 +1,13 @@
 <?php
-/**
- * @var array $_
- * @var \OCP\IL10N $l
- */
 script('user_ldap', [
 	'renewPassword',
 ]);
 style('user_ldap', 'renewPassword');
+
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
 <form method="post" name="renewpassword" id="renewpassword" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('user_ldap.renewPassword.tryRenewPassword')); ?>">
 	<fieldset>

@@ -1,9 +1,4 @@
 <?php
-/**
- * @var array $_
- * @var \OCP\IL10N $l
- */
-
 vendor_script('user_ldap', 'ui-multiselect/src/jquery.multiselect');
 
 vendor_style('user_ldap', 'ui-multiselect/jquery.multiselect');
@@ -52,6 +47,11 @@ script('user_ldap', [
 ]);
 
 style('user_ldap', 'settings');
+
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
 ?>
 <form id="ldap" class="section" action="#" method="post">
 	<h2><?php p($l->t('LDAP / AD integration')); ?></h2>

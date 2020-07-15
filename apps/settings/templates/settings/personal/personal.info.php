@@ -1,5 +1,8 @@
 <?php
 /**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ *
  * @copyright Copyright (c) 2017 Arthur Schiwon <blizzz@arthur-schiwon.de>
  *
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
@@ -20,8 +23,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @var array $_
- * @var \OCP\IL10N $l
  */
 script('settings', [
 	'usersettings',

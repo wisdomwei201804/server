@@ -19,14 +19,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @var array $_
+ * @var \OCP\IL10N $l
  */
-
 script('dav', [
 	'settings-admin-caldav'
 ]);
-
-/** @var \OCP\IL10N $l */
-/** @var array $_ */
 ?>
 <form id="CalDAV" class="section">
 	<h2><?php p($l->t('Calendar server')); ?></h2>

@@ -20,7 +20,7 @@
   -
   -->
 <template>
-	<HeaderMenu id="unified-search" class="unified-search" @open="focusInput">
+	<HeaderMenu id="unified-search" class="unified-search" @open="onOpen">
 		<template #trigger>
 			<span class="icon-search-white" />
 		</template>
@@ -28,7 +28,7 @@
 			<input ref="input"
 				class="unified-search__input"
 				type="search"
-				:placeholder="t('core', 'Search for {types}', {types})">
+				:placeholder="t('core', 'Search for {types} …', { types: formattedTypes })">
 		</div>
 		<p>
 			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
@@ -38,6 +38,7 @@
 
 <script>
 import HeaderMenu from '../components/HeaderMenu'
+import { getTypes } from '../services/UnifiedSearchService'
 
 export default {
 	name: 'UnifiedSearch',
@@ -46,13 +47,31 @@ export default {
 		HeaderMenu,
 	},
 
+	data() {
+		return {
+			types: [],
+		}
+	},
+
 	computed: {
-		types() {
-			return 'Files, Comments'
+		formattedTypes() {
+			return this.types.map(type => type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()).join(', ')
 		},
 	},
 
+	async created() {
+		this.types = await getTypes()
+		console.debug('Unified Search initialized with the following providers', this.types)
+	},
+
 	methods: {
+		async onOpen() {
+			this.focusInput()
+
+			// Update types list in the background
+			this.types = await getTypes()
+		},
+
 		focusInput() {
 			this.$nextTick(() => {
 				this.$refs.input.focus()

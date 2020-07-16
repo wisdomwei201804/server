@@ -44,21 +44,20 @@
 
 namespace OC;
 
-use OC\AppFramework\Http\Request;
 use OC\Template\JSCombiner;
 use OC\Template\JSConfigHelper;
 use OC\Template\SCSSCacher;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Defaults;
+use OCP\IConfig;
 use OCP\IInitialStateService;
 use OCP\Support\Subscription\IRegistry;
+use OCP\Util;
 
 class TemplateLayout extends \OC_Template {
 	private static $versionHash = '';
 
-	/**
-	 * @var \OCP\IConfig
-	 */
+	/** @var IConfig */
 	private $config;
 
 	/**
@@ -70,8 +69,8 @@ class TemplateLayout extends \OC_Template {
 		// yes - should be injected ....
 		$this->config = \OC::$server->getConfig();
 
-		if (\OCP\Util::isIE()) {
-			\OC_Util::addStyle('ie');
+		if (Util::isIE()) {
+			Util::addStyle('ie');
 		}
 
 		// Decide which page we show
@@ -82,6 +81,8 @@ class TemplateLayout extends \OC_Template {
 			} else {
 				$this->assign('bodyid', 'body-user');
 			}
+
+			Util::addScript('dist/unified-search', null, true);
 
 			// Add navigation entry
 			$this->assign('application', '');

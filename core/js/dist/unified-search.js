@@ -177,12 +177,13 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./core/src/services/UnifiedSearchService.js ***!
   \***************************************************/
-/*! exports provided: getTypes */
+/*! exports provided: getTypes, search */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTypes", function() { return getTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "search", function() { return search; });
 /* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
 /* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _nextcloud_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @nextcloud/router */ "./node_modules/@nextcloud/router/dist/index.js");
@@ -220,6 +221,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function getTypes() {
   return _getTypes.apply(this, arguments);
 }
+/**
+ * Get the list of available search providers
+ *
+ * @param {string} type the type to search
+ * @param {string} query the search
+ * @returns {Promise}
+ */
 
 function _getTypes() {
   _getTypes = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -264,6 +272,10 @@ function _getTypes() {
     }, _callee, null, [[0, 9]]);
   }));
   return _getTypes.apply(this, arguments);
+}
+
+function search(type, query) {
+  return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_1__["generateUrl"])("/search/providers/".concat(type, "/search?term=").concat(query)));
 }
 
 /***/ }),
@@ -5061,7 +5073,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_HeaderMenu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/HeaderMenu */ "./core/src/components/HeaderMenu.vue");
-/* harmony import */ var _services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/UnifiedSearchService */ "./core/src/services/UnifiedSearchService.js");
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! debounce */ "./node_modules/debounce/index.js");
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/UnifiedSearchService */ "./core/src/services/UnifiedSearchService.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -5106,6 +5120,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 
 
+
+var minSearchLength = 2;
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'UnifiedSearch',
   components: {
@@ -5113,7 +5129,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      types: []
+      types: [],
+      results: {},
+      loading: {},
+      query: '',
+      minSearchLength: minSearchLength
     };
   },
   computed: {
@@ -5132,7 +5152,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return Object(_services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_1__["getTypes"])();
+              return Object(_services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_2__["getTypes"])();
 
             case 2:
               _this.types = _context.sent;
@@ -5159,7 +5179,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
                 _context2.next = 3;
-                return Object(_services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_1__["getTypes"])();
+                return Object(_services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_2__["getTypes"])();
 
               case 3:
                 _this2.types = _context2.sent;
@@ -5180,7 +5200,62 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this3.$refs.input.select();
       });
-    }
+    },
+    onInput: function onInput(e) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!(_this4.query && _this4.query.trim().length < minSearchLength)) {
+                  _context4.next = 2;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 2:
+                _this4.types.forEach( /*#__PURE__*/function () {
+                  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(type) {
+                    var results;
+                    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                      while (1) {
+                        switch (_context3.prev = _context3.next) {
+                          case 0:
+                            _context3.next = 2;
+                            return Object(_services_UnifiedSearchService__WEBPACK_IMPORTED_MODULE_2__["search"])(type, _this4.query);
+
+                          case 2:
+                            results = _context3.sent;
+
+                            _this4.$set(_this4.results, type, results.data.entries);
+
+                          case 4:
+                          case "end":
+                            return _context3.stop();
+                        }
+                      }
+                    }, _callee3);
+                  }));
+
+                  return function (_x) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    onInputDebounced: debounce__WEBPACK_IMPORTED_MODULE_1___default()(function (e) {
+      this.onInput(e);
+    }, 200)
   }
 });
 
@@ -9000,7 +9075,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".unified-search__input[data-v-d79c2f68] {\n  margin: 8px;\n  height: 34px;\n  width: calc(100% - 2 * 8px);\n}\n", ""]);
+exports.push([module.i, ".unified-search__input-wrapper[data-v-d79c2f68] {\n  position: sticky;\n  background-color: var(--color-main-background);\n  top: 0;\n}\n.unified-search__input[data-v-d79c2f68] {\n  margin: 8px;\n  height: 34px;\n  width: calc(100% - 2 * 8px);\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -9109,6 +9184,87 @@ function toComment(sourceMap) {
   var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
   return "/*# ".concat(data, " */");
 }
+
+/***/ }),
+
+/***/ "./node_modules/debounce/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/debounce/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
+
 
 /***/ }),
 
@@ -9708,6 +9864,14 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "unified-search__input-wrapper" }, [
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.query,
+              expression: "query"
+            }
+          ],
           ref: "input",
           staticClass: "unified-search__input",
           attrs: {
@@ -9715,15 +9879,23 @@ var render = function() {
             placeholder: _vm.t("core", "Search for {types} …", {
               types: _vm.formattedTypes
             })
+          },
+          domProps: { value: _vm.query },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.query = $event.target.value
+              },
+              _vm.onInputDebounced
+            ]
           }
         })
       ]),
       _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "\n\t\tLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\t"
-        )
-      ])
+      _c("pre", [_vm._v(_vm._s(_vm.results))])
     ]
   )
 }

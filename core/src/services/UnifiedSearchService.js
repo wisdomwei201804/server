@@ -36,3 +36,14 @@ export async function getTypes() {
 	}
 	return []
 }
+
+/**
+ * Get the list of available search providers
+ *
+ * @param {string} type the type to search
+ * @param {string} query the search
+ * @returns {Promise}
+ */
+export function search(type, query) {
+	return axios.get(generateUrl(`/search/providers/${type}/search?term=${query}`))
+}

@@ -26,19 +26,22 @@
 		</template>
 		<div class="unified-search__input-wrapper">
 			<input ref="input"
+				v-model="query"
 				class="unified-search__input"
 				type="search"
-				:placeholder="t('core', 'Search for {types} …', { types: formattedTypes })">
+				:placeholder="t('core', 'Search for {types} …', { types: formattedTypes })"
+				@input="onInputDebounced">
 		</div>
-		<p>
-			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-		</p>
+		<pre>{{ results }}</pre>
 	</HeaderMenu>
 </template>
 
 <script>
 import HeaderMenu from '../components/HeaderMenu'
-import { getTypes } from '../services/UnifiedSearchService'
+import debounce from 'debounce'
+import { getTypes, search } from '../services/UnifiedSearchService'
+
+const minSearchLength = 2
 
 export default {
 	name: 'UnifiedSearch',
@@ -50,6 +53,10 @@ export default {
 	data() {
 		return {
 			types: [],
+			results: {},
+			loading: {},
+			query: '',
+			minSearchLength,
 		}
 	},
 
@@ -78,12 +85,34 @@ export default {
 				this.$refs.input.select()
 			})
 		},
+
+		async onInput(e) {
+			// Do not search if not long enough
+			if (this.query && this.query.trim().length < minSearchLength) {
+				return
+			}
+
+			this.types.forEach(async type => {
+				const results = await search(type, this.query)
+				this.$set(this.results, type, results.data.entries)
+			})
+		},
+
+		onInputDebounced: debounce(function(e) {
+			this.onInput(e)
+		}, 200),
 	},
 }
 </script>
 
 <style lang="scss" scoped>
 .unified-search {
+	&__input-wrapper {
+		position: sticky;
+		background-color: var(--color-main-background);
+		top: 0;
+	}
+
 	&__input {
 		margin: 8px;
 		height: 34px;

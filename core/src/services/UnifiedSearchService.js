@@ -19,8 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import { loadState } from '@nextcloud/initial-state'
+import axios from '@nextcloud/axios'
+
+export const defaultLimit = loadState('unified-search', 'limit-default')
 
 /**
  * Get the list of available search providers

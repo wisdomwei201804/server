@@ -21,9 +21,12 @@
   -->
 <template>
 	<HeaderMenu id="unified-search" class="unified-search" @open="onOpen">
+		<!-- Header icon -->
 		<template #trigger>
 			<span class="icon-search-white" />
 		</template>
+
+		<!-- Search input -->
 		<div class="unified-search__input-wrapper">
 			<input ref="input"
 				v-model="query"
@@ -32,14 +35,39 @@
 				:placeholder="t('core', 'Search for {types} …', { types: formattedTypes })"
 				@input="onInputDebounced">
 		</div>
-		<pre>{{ results }}</pre>
+
+		<!-- Grouped search results -->
+		<ul v-for="(list, type) in results"
+			:key="type"
+			class="unified-search__results"
+			:class="`unified-search__results-${type}`">
+			<!-- Search results -->
+			<SearchResult v-for="result in list" :key="result.resourceUrl" v-bind="result">
+				<ActionLink icon="icon-external" :href="result.resourceUrl" />
+			</SearchResult>
+
+			<!-- Load more button -->
+			<SearchResult :title="loading[type]
+					? t('core', 'Load more results …')
+					: t('core', 'Loading more results …')"
+				:icon="loading[type] ? 'icon-loading-small' : ''"
+				@click="loadMore(type)">
+				<ActionButton icon="icon-add" @click.stop="loadMore(type)" />
+			</SearchResult>
+		</ul>
 	</HeaderMenu>
 </template>
 
 <script>
-import HeaderMenu from '../components/HeaderMenu'
+import { getTypes, search, defaultLimit } from '../services/UnifiedSearchService'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import ActionLink from '@nextcloud/vue/dist/Components/ActionLink'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+
 import debounce from 'debounce'
-import { getTypes, search } from '../services/UnifiedSearchService'
+
+import HeaderMenu from '../components/HeaderMenu'
+import SearchResult from '../components/UnifiedSearch/SearchResult'
 
 const minSearchLength = 2
 
@@ -47,7 +75,11 @@ export default {
 	name: 'UnifiedSearch',
 
 	components: {
+		ActionButton,
+		ActionLink,
+		EmptyContent,
 		HeaderMenu,
+		SearchResult,
 	},
 
 	data() {
@@ -56,6 +88,7 @@ export default {
 			results: {},
 			loading: {},
 			query: '',
+			defaultLimit,
 			minSearchLength,
 		}
 	},
@@ -63,6 +96,9 @@ export default {
 	computed: {
 		formattedTypes() {
 			return this.types.map(type => type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()).join(', ')
+		},
+		hasResults() {
+			return Object.keys(this.results).length !== 0
 		},
 	},
 
@@ -93,14 +129,18 @@ export default {
 			}
 
 			this.types.forEach(async type => {
-				const results = await search(type, this.query)
-				this.$set(this.results, type, results.data.entries)
+				const request = await search(type, this.query)
+				this.$set(this.results, type, request.data.entries)
 			})
 		},
 
 		onInputDebounced: debounce(function(e) {
 			this.onInput(e)
 		}, 200),
+
+		loadMore(type) {
+			this.$set(this.loading, type, true)
+		},
 	},
 }
 </script>
@@ -109,14 +149,16 @@ export default {
 .unified-search {
 	&__input-wrapper {
 		position: sticky;
-		background-color: var(--color-main-background);
+		// above search results
+		z-index: 2;
 		top: 0;
+		background-color: var(--color-main-background);
 	}
 
 	&__input {
-		margin: 8px;
-		height: 34px;
 		width: calc(100% - 2 * 8px);
+		height: 34px;
+		margin: 8px;
 	}
 }
 

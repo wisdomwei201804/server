@@ -103,7 +103,7 @@ class ImageExportPlugin extends ServerPlugin {
 		try {
 			$file = $this->cache->get($addressbook->getResourceId(), $node->getName(), $size, $node);
 			$response->setHeader('Content-Type', $file->getMimeType());
-			$response->setHeader('Content-Disposition', 'attachment');
+			$response->setHeader('Content-Disposition', 'attachment; filename="ContactPhoto.png"');
 			$response->setStatus(200);
 
 			$response->setBody($file->getContent());

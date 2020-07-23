@@ -21,7 +21,7 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateFilePath } from '@nextcloud/router'
-import { translate as t } from '@nextcloud/l10n'
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import Vue from 'vue'
 
 import UnifiedSearch from './views/UnifiedSearch.vue'
@@ -35,6 +35,7 @@ __webpack_public_path__ = generateFilePath('core', '', 'js/')
 Vue.mixin({
 	methods: {
 		t,
+		n,
 	},
 })
 

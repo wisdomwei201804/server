@@ -20,7 +20,10 @@
   -
   -->
 <template>
-	<HeaderMenu id="unified-search" class="unified-search" @open="onOpen">
+	<HeaderMenu id="unified-search"
+		class="unified-search"
+		@open="onOpen"
+		@close="onClose">
 		<!-- Header icon -->
 		<template #trigger>
 			<span class="icon-search-white" />
@@ -36,25 +39,38 @@
 				@input="onInputDebounced">
 		</div>
 
-		<!-- Grouped search results -->
-		<ul v-for="(list, type) in results"
-			:key="type"
-			class="unified-search__results"
-			:class="`unified-search__results-${type}`">
-			<!-- Search results -->
-			<SearchResult v-for="result in list" :key="result.resourceUrl" v-bind="result">
-				<ActionLink icon="icon-external" :href="result.resourceUrl" />
-			</SearchResult>
+		<EmptyContent v-if="!hasResults" icon="icon-search">
+			{{ t('core', 'Start typing to search') }}
+			<template v-if="isShortQuery" #desc>
+				{{ n('core',
+					'Please enter {minSearchLength} character or more to search',
+					'Please enter {minSearchLength} characters  or more to search',
+					minSearchLength,
+					{minSearchLength}) }}
+			</template>
+		</EmptyContent>
 
-			<!-- Load more button -->
-			<SearchResult :title="loading[type]
-					? t('core', 'Load more results …')
-					: t('core', 'Loading more results …')"
-				:icon="loading[type] ? 'icon-loading-small' : ''"
-				@click="loadMore(type)">
-				<ActionButton icon="icon-add" @click.stop="loadMore(type)" />
-			</SearchResult>
-		</ul>
+		<!-- Grouped search results -->
+		<template v-else>
+			<ul v-for="(list, type) in results"
+				:key="type"
+				class="unified-search__results"
+				:class="`unified-search__results-${type}`">
+				<!-- Search results -->
+				<SearchResult v-for="result in list" :key="result.resourceUrl" v-bind="result">
+					<ActionLink icon="icon-external" :href="result.resourceUrl" />
+				</SearchResult>
+
+				<!-- Load more button -->
+				<SearchResult :title="loading[type]
+						? t('core', 'Load more results …')
+						: t('core', 'Loading more results …')"
+					:icon="loading[type] ? 'icon-loading-small' : ''"
+					@click="loadMore(type)">
+					<ActionButton icon="icon-add" @click.stop="loadMore(type)" />
+				</SearchResult>
+			</ul>
+		</template>
 	</HeaderMenu>
 </template>
 
@@ -100,6 +116,9 @@ export default {
 		hasResults() {
 			return Object.keys(this.results).length !== 0
 		},
+		isShortQuery() {
+			return this.query && this.query.trim().length < minSearchLength
+		},
 	},
 
 	async created() {
@@ -114,7 +133,15 @@ export default {
 			// Update types list in the background
 			this.types = await getTypes()
 		},
+		onClose() {
+			this.results = {}
+			this.loading = {}
+			this.query = ''
+		},
 
+		/**
+		 * Focus the search input on next tick
+		 */
 		focusInput() {
 			this.$nextTick(() => {
 				this.$refs.input.focus()
@@ -122,22 +149,38 @@ export default {
 			})
 		},
 
+		/**
+		 * Start searching on input
+		 * @param {Event} e the input event
+		 */
 		async onInput(e) {
 			// Do not search if not long enough
-			if (this.query && this.query.trim().length < minSearchLength) {
+			if (this.query.trim() === '' || this.isShortQuery) {
 				return
 			}
 
 			this.types.forEach(async type => {
+				this.$set(this.loading, type, true)
 				const request = await search(type, this.query)
-				this.$set(this.results, type, request.data.entries)
+
+				// Process results
+				if (request.data.entries.length > 0) {
+					this.$set(this.results, type, request.data.entries)
+				} else {
+					this.$$delete(this.results, type)
+				}
+
+				this.$set(this.loading, type, false)
 			})
 		},
-
 		onInputDebounced: debounce(function(e) {
 			this.onInput(e)
 		}, 200),
 
+		/**
+		 * Load more results for the provided type
+		 * @param {String} type type
+		 */
 		loadMore(type) {
 			this.$set(this.loading, type, true)
 		},
@@ -159,6 +202,10 @@ export default {
 		width: calc(100% - 2 * 8px);
 		height: 34px;
 		margin: 8px;
+	}
+
+	.empty-content {
+		margin: 10vh 0;
 	}
 }
 
